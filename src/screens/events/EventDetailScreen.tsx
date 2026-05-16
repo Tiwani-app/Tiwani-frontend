@@ -1,27 +1,27 @@
-import React, {useEffect, useState} from 'react';
-import {Alert, ScrollView, StyleSheet, Text, View} from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import Badge from '../../components/common/Badge';
-import GoldButton from '../../components/common/GoldButton';
-import LoadingSpinner from '../../components/common/LoadingSpinner';
-import OutlineButton from '../../components/common/OutlineButton';
-import ScreenHeader from '../../components/common/ScreenHeader';
-import {getEvent, toggleRsvp} from '../../services/eventsService';
-import {useAuthStore} from '../../store/authStore';
-import {colors, spacing, typography} from '../../theme';
-import {CATEGORY_COLORS, TiwaniEvent} from '../../types/event';
-import {formatEventDate, formatEventTime} from '../../utils/formatDate';
-import {isAdmin} from '../../utils/roleGuard';
+import React, { useEffect, useState } from "react";
+import { Alert, ScrollView, StyleSheet, Text, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import Badge from "../../components/common/Badge";
+import GoldButton from "../../components/common/GoldButton";
+import LoadingSpinner from "../../components/common/LoadingSpinner";
+import OutlineButton from "../../components/common/OutlineButton";
+import ScreenHeader from "../../components/common/ScreenHeader";
+import { getEvent, toggleRsvp } from "../../services/eventsService";
+import { useAuthStore } from "../../store/authStore";
+import { colors, spacing, typography } from "../../theme";
+import { CATEGORY_COLORS, TiwaniEvent } from "../../types/event";
+import { formatEventDate, formatEventTime } from "../../utils/formatDate";
+import { isAdmin } from "../../utils/roleGuard";
 
-const EventDetailScreen = ({navigation, route}: any) => {
+const EventDetailScreen = ({ navigation, route }: any) => {
   const [event, setEvent] = useState<TiwaniEvent | null>(null);
   const [loading, setLoading] = useState(true);
-  const {user} = useAuthStore();
+  const { user } = useAuthStore();
 
   useEffect(() => {
     getEvent(route.params.eventId)
       .then(setEvent)
-      .catch(() => Alert.alert('Error', 'Could not load this event.'))
+      .catch(() => Alert.alert("Error", "Could not load this event."))
       .finally(() => setLoading(false));
   }, [route.params.eventId]);
 
@@ -30,7 +30,8 @@ const EventDetailScreen = ({navigation, route}: any) => {
   }
 
   const isRsvped = user ? event.rsvpList.includes(user.uid) : false;
-  const isFull = event.capacity > 0 && event.rsvpList.length >= event.capacity && !isRsvped;
+  const isFull =
+    event.capacity > 0 && event.rsvpList.length >= event.capacity && !isRsvped;
   const categoryColor = CATEGORY_COLORS[event.category];
 
   const handleToggleRsvp = async () => {
@@ -42,11 +43,11 @@ const EventDetailScreen = ({navigation, route}: any) => {
       setEvent({
         ...event,
         rsvpList: isRsvped
-          ? event.rsvpList.filter(uid => uid !== user.uid)
+          ? event.rsvpList.filter((uid) => uid !== user.uid)
           : [...event.rsvpList, user.uid],
       });
     } catch {
-      Alert.alert('Error', 'Could not update your RSVP. Please try again.');
+      Alert.alert("Error", "Could not update your RSVP. Please try again.");
     }
   };
 
@@ -55,23 +56,32 @@ const EventDetailScreen = ({navigation, route}: any) => {
       <ScreenHeader
         title="Event"
         showBack
-        onBack={navigation.goBack}
-        rightElement={<Badge label={event.category.toUpperCase()} color={categoryColor} />}
+        onBack={() => navigation.navigate("EventsList")}
+        rightElement={
+          <Badge label={event.category.toUpperCase()} color={categoryColor} />
+        }
       />
       <ScrollView contentContainerStyle={styles.content}>
         <View style={styles.hero}>
           <Text style={styles.title}>{event.title}</Text>
           <View style={styles.badgeRow}>
-            <Badge label={`${event.rsvpList.length} GOING`} color={colors.status.success} />
+            <Badge
+              label={`${event.rsvpList.length} GOING`}
+              color={colors.status.success}
+            />
             {event.capacity > 0 && (
-              <Badge label={`${Math.max(event.capacity - event.rsvpList.length, 0)} SPOTS LEFT`} color={colors.gold.default} />
+              <Badge
+                label={`${Math.max(event.capacity - event.rsvpList.length, 0)} SPOTS LEFT`}
+                color={colors.gold.default}
+              />
             )}
           </View>
         </View>
         <View style={styles.infoCard}>
           <Text style={styles.infoLabel}>DATE & TIME</Text>
           <Text style={styles.infoValue}>
-            {formatEventDate(event.dateTime)} · {formatEventTime(event.dateTime)}
+            {formatEventDate(event.dateTime)} ·{" "}
+            {formatEventTime(event.dateTime)}
           </Text>
         </View>
         <View style={styles.infoCard}>
@@ -85,12 +95,24 @@ const EventDetailScreen = ({navigation, route}: any) => {
         {isFull ? (
           <Text style={styles.fullText}>This event is full.</Text>
         ) : isRsvped ? (
-          <OutlineButton label="You're Going!" onPress={handleToggleRsvp} fullWidth />
+          <OutlineButton
+            label="You're Going!"
+            onPress={handleToggleRsvp}
+            fullWidth
+          />
         ) : (
-          <GoldButton label="RSVP to This Event" onPress={handleToggleRsvp} fullWidth />
+          <GoldButton
+            label="RSVP to This Event"
+            onPress={handleToggleRsvp}
+            fullWidth
+          />
         )}
         {isAdmin(user) && (
-          <OutlineButton label="Admin: Open Check-in Screen" onPress={() => {}} fullWidth />
+          <OutlineButton
+            label="Admin: Open Check-in Screen"
+            onPress={() => {}}
+            fullWidth
+          />
         )}
       </ScrollView>
     </SafeAreaView>
@@ -98,11 +120,20 @@ const EventDetailScreen = ({navigation, route}: any) => {
 };
 
 const styles = StyleSheet.create({
-  safe: {flex: 1, backgroundColor: colors.bg.secondary},
-  content: {padding: spacing.lg, gap: spacing.lg},
-  hero: {gap: spacing.md, padding: spacing.xl, borderRadius: 8, backgroundColor: colors.bg.card},
-  title: {fontSize: typography.size.xxl, fontWeight: typography.weight.black, color: colors.text.primary},
-  badgeRow: {flexDirection: 'row', gap: spacing.sm, flexWrap: 'wrap'},
+  safe: { flex: 1, backgroundColor: colors.bg.secondary },
+  content: { padding: spacing.lg, gap: spacing.lg },
+  hero: {
+    gap: spacing.md,
+    padding: spacing.xl,
+    borderRadius: 8,
+    backgroundColor: colors.bg.card,
+  },
+  title: {
+    fontSize: typography.size.xxl,
+    fontWeight: typography.weight.black,
+    color: colors.text.primary,
+  },
+  badgeRow: { flexDirection: "row", gap: spacing.sm, flexWrap: "wrap" },
   infoCard: {
     gap: spacing.sm,
     padding: spacing.lg,
@@ -111,10 +142,22 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: colors.border.subtle,
   },
-  infoLabel: {fontSize: typography.size.xs, color: colors.text.secondary, letterSpacing: 0.6},
-  infoValue: {fontSize: typography.size.base, color: colors.text.primary},
-  body: {fontSize: typography.size.base, color: colors.text.secondary, lineHeight: 21},
-  fullText: {textAlign: 'center', color: colors.status.error, fontWeight: typography.weight.bold},
+  infoLabel: {
+    fontSize: typography.size.xs,
+    color: colors.text.secondary,
+    letterSpacing: 0.6,
+  },
+  infoValue: { fontSize: typography.size.base, color: colors.text.primary },
+  body: {
+    fontSize: typography.size.base,
+    color: colors.text.secondary,
+    lineHeight: 21,
+  },
+  fullText: {
+    textAlign: "center",
+    color: colors.status.error,
+    fontWeight: typography.weight.bold,
+  },
 });
 
 export default EventDetailScreen;
