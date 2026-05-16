@@ -56,8 +56,6 @@ const MarketplaceScreen = ({ navigation }: any) => {
     <SafeAreaView style={styles.safe}>
       <ScreenHeader
         title="Marketplace"
-        showBack
-        onBack={navigation.goBack}
         rightElement={
           admin ? (
             <Badge

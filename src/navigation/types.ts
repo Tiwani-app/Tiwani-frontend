@@ -1,4 +1,4 @@
-import {NavigatorScreenParams} from '@react-navigation/native';
+import { NavigatorScreenParams } from "@react-navigation/native";
 
 export type AuthStackParamList = {
   Splash: undefined;
@@ -7,32 +7,36 @@ export type AuthStackParamList = {
 
 export type EventsStackParamList = {
   EventsList: undefined;
-  EventDetail: {eventId: string};
+  EventDetail: { eventId: string };
 };
 
 export type VotingStackParamList = {
   VotingHub: undefined;
-  PollVote: {pollId: string};
-  ElectionBallot: {electionId: string};
+  PollVote: { pollId: string };
+  ElectionBallot: { electionId: string };
 };
 
 export type FinanceStackParamList = {
   FinanceAdmin: undefined;
-  MyLedger: {memberId?: string} | undefined;
+  MyLedger: { memberId?: string } | undefined;
 };
 
-export type MoreStackParamList = {
-  Marketplace: undefined;
-  MembersList: undefined;
-  MemberProfile: {memberId: string};
+export type DashboardStackParamList = {
+  DashboardHome: undefined;
   Notifications: undefined;
   Settings: undefined;
+  MembersList: undefined;
+  MemberProfile: { memberId: string };
+};
+
+export type MarketStackParamList = {
+  Marketplace: undefined;
 };
 
 export type AppTabParamList = {
-  Dashboard: undefined;
+  Dashboard: NavigatorScreenParams<DashboardStackParamList>;
   Events: NavigatorScreenParams<EventsStackParamList>;
   Voting: NavigatorScreenParams<VotingStackParamList>;
   Finance: NavigatorScreenParams<FinanceStackParamList>;
-  More: NavigatorScreenParams<MoreStackParamList>;
+  Market: NavigatorScreenParams<MarketStackParamList>;
 };

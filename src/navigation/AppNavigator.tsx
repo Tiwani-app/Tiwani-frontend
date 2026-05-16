@@ -1,19 +1,19 @@
-import React from 'react';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import Icon from '../components/common/FeatherIcon';
-import DashboardScreen from '../screens/DashboardScreen';
-import EventsStack from './EventsStack';
-import FinanceStack from './FinanceStack';
-import MoreStack from './MoreStack';
-import VotingStack from './VotingStack';
-import {colors} from '../theme';
-import {AppTabParamList} from './types';
+import React from "react";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import Icon from "../components/common/FeatherIcon";
+import DashboardStack from "./DashboardStack";
+import EventsStack from "./EventsStack";
+import FinanceStack from "./FinanceStack";
+import MarketStack from "./MarketStack";
+import VotingStack from "./VotingStack";
+import { colors } from "../theme";
+import { AppTabParamList } from "./types";
 
 const Tab = createBottomTabNavigator<AppTabParamList>();
 
 const AppNavigator = () => (
   <Tab.Navigator
-    screenOptions={({route}) => ({
+    screenOptions={({ route }) => ({
       headerShown: false,
       tabBarStyle: {
         backgroundColor: colors.bg.secondary,
@@ -23,23 +23,31 @@ const AppNavigator = () => (
       },
       tabBarActiveTintColor: colors.gold.default,
       tabBarInactiveTintColor: colors.text.tertiary,
-      tabBarLabelStyle: {fontSize: 10, fontWeight: '500'},
-      tabBarIcon: ({color, size}) => {
+      tabBarLabelStyle: { fontSize: 10, fontWeight: "500" },
+      tabBarLabel: {
+        Dashboard: "Home",
+        Events: "Events",
+        Voting: "Vote",
+        Finance: "Finance",
+        Market: "Market",
+      }[route.name],
+      tabBarIcon: ({ color, size }) => {
         const icons: Record<keyof AppTabParamList, string> = {
-          Dashboard: 'home',
-          Events: 'calendar',
-          Voting: 'check-circle',
-          Finance: 'credit-card',
-          More: 'grid',
+          Dashboard: "home",
+          Events: "calendar",
+          Voting: "check-circle",
+          Finance: "credit-card",
+          Market: "shopping-bag",
         };
         return <Icon name={icons[route.name]} size={size - 2} color={color} />;
       },
-    })}>
-    <Tab.Screen name="Dashboard" component={DashboardScreen} />
+    })}
+  >
+    <Tab.Screen name="Dashboard" component={DashboardStack} />
     <Tab.Screen name="Events" component={EventsStack} />
     <Tab.Screen name="Voting" component={VotingStack} />
     <Tab.Screen name="Finance" component={FinanceStack} />
-    <Tab.Screen name="More" component={MoreStack} />
+    <Tab.Screen name="Market" component={MarketStack} />
   </Tab.Navigator>
 );
 
