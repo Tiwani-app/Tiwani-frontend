@@ -1,6 +1,5 @@
 import React from 'react';
-import {ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import Icon from '../../components/common/FeatherIcon';
+import {ScrollView, StyleSheet, Text, TouchableOpacity} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Badge from '../../components/common/Badge';
 import EmptyState from '../../components/common/EmptyState';
@@ -8,27 +7,15 @@ import GoldButton from '../../components/common/GoldButton';
 import ScreenHeader from '../../components/common/ScreenHeader';
 import PollCard from '../../components/voting/PollCard';
 import {useVoting} from '../../hooks/useVoting';
-import {useAuthStore} from '../../store/authStore';
 import {colors, spacing, typography} from '../../theme';
-import {isAdmin} from '../../utils/roleGuard';
 
 const VotingHubScreen = ({navigation}: any) => {
   const {elections, polls} = useVoting();
-  const {user} = useAuthStore();
   const empty = elections.length === 0 && polls.length === 0;
 
   return (
     <SafeAreaView style={styles.safe}>
-      <ScreenHeader
-        title="Vote & Polls"
-        rightElement={
-          isAdmin(user) ? (
-            <TouchableOpacity style={styles.iconButton}>
-              <Icon name="plus" size={18} color={colors.gold.default} />
-            </TouchableOpacity>
-          ) : null
-        }
-      />
+      <ScreenHeader title="Vote & Polls" />
       <ScrollView contentContainerStyle={styles.content}>
         {empty ? (
           <EmptyState icon="🗳️" title="No active votes" message="The admin will open polls and elections here." />
@@ -72,7 +59,6 @@ const VotingHubScreen = ({navigation}: any) => {
 const styles = StyleSheet.create({
   safe: {flex: 1, backgroundColor: colors.bg.secondary},
   content: {padding: spacing.lg, gap: spacing.md},
-  iconButton: {width: 48, height: 48, alignItems: 'center', justifyContent: 'center'},
   sectionLabel: {fontSize: typography.size.xs, color: colors.text.secondary, fontWeight: typography.weight.bold},
   electionCard: {
     gap: spacing.md,

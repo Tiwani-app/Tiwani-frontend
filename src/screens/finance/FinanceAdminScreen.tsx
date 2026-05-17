@@ -1,6 +1,5 @@
 import React, {useEffect} from 'react';
 import {FlatList, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import Icon from '../../components/common/FeatherIcon';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Avatar from '../../components/common/Avatar';
 import Badge from '../../components/common/Badge';
@@ -23,7 +22,7 @@ const SummaryTile = ({label, value}: any) => (
 
 const FinanceAdminScreen = ({navigation}: any) => {
   const {user} = useAuthStore();
-  const {duesPeriods, ledgerEntries} = useFinance(user?.uid);
+  const {duesPeriods, ledgerEntries} = useFinance(undefined, true);
   const {members} = useMembers();
 
   useEffect(() => {
@@ -42,14 +41,7 @@ const FinanceAdminScreen = ({navigation}: any) => {
 
   return (
     <SafeAreaView style={styles.safe}>
-      <ScreenHeader
-        title="Finance"
-        rightElement={
-          <TouchableOpacity style={styles.iconButton}>
-            <Icon name="plus" size={18} color={colors.gold.default} />
-          </TouchableOpacity>
-        }
-      />
+      <ScreenHeader title="Finance" />
       <FlatList
         data={members}
         keyExtractor={item => item.uid}
@@ -94,7 +86,6 @@ const FinanceAdminScreen = ({navigation}: any) => {
 const styles = StyleSheet.create({
   safe: {flex: 1, backgroundColor: colors.bg.secondary},
   content: {padding: spacing.lg, gap: spacing.md},
-  iconButton: {width: 48, height: 48, alignItems: 'center', justifyContent: 'center'},
   summaryRow: {flexDirection: 'row', gap: spacing.sm},
   summaryTile: {flex: 1, minHeight: 78, padding: spacing.md, borderRadius: 8, backgroundColor: colors.bg.card},
   summaryValue: {fontSize: typography.size.md, fontWeight: typography.weight.black, color: colors.text.primary},

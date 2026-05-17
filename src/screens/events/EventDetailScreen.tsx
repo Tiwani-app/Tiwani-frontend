@@ -11,7 +11,6 @@ import { useAuthStore } from "../../store/authStore";
 import { colors, spacing, typography } from "../../theme";
 import { CATEGORY_COLORS, TiwaniEvent } from "../../types/event";
 import { formatEventDate, formatEventTime } from "../../utils/formatDate";
-import { isAdmin } from "../../utils/roleGuard";
 
 const EventDetailScreen = ({ navigation, route }: any) => {
   const [event, setEvent] = useState<TiwaniEvent | null>(null);
@@ -104,13 +103,6 @@ const EventDetailScreen = ({ navigation, route }: any) => {
           <GoldButton
             label="RSVP to This Event"
             onPress={handleToggleRsvp}
-            fullWidth
-          />
-        )}
-        {isAdmin(user) && (
-          <OutlineButton
-            label="Admin: Open Check-in Screen"
-            onPress={() => {}}
             fullWidth
           />
         )}

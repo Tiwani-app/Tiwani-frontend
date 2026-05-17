@@ -43,7 +43,6 @@ const AdminListingCard = ({ listing }: Props) => {
         />
       </View>
       <View style={styles.actions}>
-        <OutlineButton label="Edit" onPress={() => {}} />
         {sold ? (
           <GoldButton
             label="Mark Available"

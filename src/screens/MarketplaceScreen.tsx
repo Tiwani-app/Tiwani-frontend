@@ -21,7 +21,7 @@ import { useAuthStore } from "../store/authStore";
 import { colors, spacing, typography } from "../theme";
 import { isAdmin } from "../utils/roleGuard";
 
-const MarketplaceScreen = ({ navigation }: any) => {
+const MarketplaceScreen = () => {
   const [tab, setTab] = useState<"browse" | "manage">("browse");
   const { error, listings, loading } = useMarketplace();
   const { user } = useAuthStore();

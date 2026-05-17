@@ -18,13 +18,3 @@ export const getEvent = async (eventId: string): Promise<TiwaniEvent> => {
 export const toggleRsvp = async (_eventId: string, _userId: string): Promise<void> => {
   await delay();
 };
-
-export const checkInMember = async (_eventId: string, _memberId: string): Promise<void> => {
-  await delay();
-};
-
-export const createEvent = async (
-  _data: Omit<TiwaniEvent, 'id' | 'rsvpList' | 'attendees' | 'createdBy'>,
-): Promise<void> => {
-  await delay();
-};

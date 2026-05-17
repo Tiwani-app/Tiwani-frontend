@@ -43,12 +43,12 @@ const PollVoteScreen = ({navigation, route}: any) => {
   }
 
   const handleSubmit = async () => {
-    if (!selectedPollOption) {
+    if (!selectedPollOption || !user) {
       return;
     }
     try {
       setSubmitting(true);
-      await castPollVote(poll.id, selectedPollOption);
+      await castPollVote(poll.id, selectedPollOption, user.uid);
       setHasVotedPoll(true);
     } catch (error: any) {
       Alert.alert('Vote failed', error.message ?? 'Please try again.');

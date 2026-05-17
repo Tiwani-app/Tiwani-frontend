@@ -1,7 +1,6 @@
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import Badge from '../common/Badge';
-import OutlineButton from '../common/OutlineButton';
 import {colors, spacing, typography} from '../../theme';
 import {formatCurrency} from '../../utils/formatCurrency';
 
@@ -18,14 +17,6 @@ const BalanceBanner = ({outstanding}: Props) => {
       <Text style={styles.label}>OUTSTANDING BALANCE</Text>
       <Text style={[styles.amount, {color}]}>{formatCurrency(outstanding)}</Text>
       <Badge label={clear ? 'IN GOOD STANDING' : 'DUES OVERDUE'} color={color} />
-      {!clear && (
-        <OutlineButton
-          label="Contact Treasurer to Pay"
-          onPress={() => {}}
-          fullWidth
-          color={colors.status.error}
-        />
-      )}
     </View>
   );
 };

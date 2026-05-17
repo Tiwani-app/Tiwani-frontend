@@ -24,8 +24,12 @@ export const hasCastElectionVote = async (electionId: string, userId: string): P
   return electionVotes.has(`${electionId}:${userId}`);
 };
 
-export const castPollVote = async (pollId: string, optionId: string): Promise<void> => {
+export const castPollVote = async (pollId: string, optionId: string, userId: string): Promise<void> => {
   await delay();
+  const voteKey = `${pollId}:${userId}`;
+  if (pollVotes.has(voteKey)) {
+    return;
+  }
   const poll = mockPolls.find(item => item.id === pollId);
   const option = poll?.options.find(item => item.id === optionId);
   if (!poll || !option) {
@@ -33,11 +37,23 @@ export const castPollVote = async (pollId: string, optionId: string): Promise<vo
   }
   option.voteCount += 1;
   poll.totalVotes += 1;
+  pollVotes.add(voteKey);
 };
 
 export const castElectionBallot = async (
-  _electionId: string,
-  _choices: Record<string, string>,
+  electionId: string,
+  choices: Record<string, string>,
+  userId: string,
 ): Promise<void> => {
   await delay();
+  const voteKey = `${electionId}:${userId}`;
+  if (electionVotes.has(voteKey)) {
+    return;
+  }
+  const election = mockElections.find(item => item.id === electionId);
+  const completeBallot = election?.races.every(race => choices[race.raceId]);
+  if (!election || !completeBallot) {
+    throw new Error('Ballot is incomplete.');
+  }
+  electionVotes.add(voteKey);
 };

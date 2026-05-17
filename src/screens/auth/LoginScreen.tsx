@@ -13,7 +13,6 @@ import {
 import {Controller, useForm} from 'react-hook-form';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import GoldButton from '../../components/common/GoldButton';
-import OutlineButton from '../../components/common/OutlineButton';
 import {sendPasswordReset, signIn} from '../../services/authService';
 import {colors, spacing, typography} from '../../theme';
 import {emailRules, passwordRules} from '../../utils/validators';
@@ -116,12 +115,6 @@ const LoginScreen = () => {
             loading={submitting}
             fullWidth
           />
-          <View style={styles.dividerRow}>
-            <View style={styles.line} />
-            <Text style={styles.or}>or</Text>
-            <View style={styles.line} />
-          </View>
-          <OutlineButton label="Sign in with Phone OTP" onPress={() => {}} fullWidth />
           <Text style={styles.joinText}>
             Not a member? <Text style={styles.link}>Request to Join</Text>
           </Text>
@@ -162,9 +155,6 @@ const styles = StyleSheet.create({
   errorText: {fontSize: typography.size.xs, color: colors.status.error},
   forgot: {alignSelf: 'flex-end', minHeight: 48, justifyContent: 'center'},
   forgotText: {fontSize: typography.size.base, color: colors.gold.default},
-  dividerRow: {flexDirection: 'row', alignItems: 'center', gap: spacing.md, marginVertical: spacing.sm},
-  line: {flex: 1, height: StyleSheet.hairlineWidth, backgroundColor: colors.border.subtle},
-  or: {fontSize: typography.size.sm, color: colors.text.tertiary},
   joinText: {textAlign: 'center', color: colors.text.secondary, marginTop: spacing.md},
   link: {color: colors.gold.default, fontWeight: typography.weight.bold},
 });

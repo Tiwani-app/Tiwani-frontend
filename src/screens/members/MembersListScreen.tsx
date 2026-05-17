@@ -1,6 +1,5 @@
 import React, {useEffect, useMemo} from 'react';
-import {FlatList, StyleSheet, TextInput, TouchableOpacity} from 'react-native';
-import Icon from '../../components/common/FeatherIcon';
+import {FlatList, StyleSheet, TextInput} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import EmptyState from '../../components/common/EmptyState';
 import LoadingSpinner from '../../components/common/LoadingSpinner';
@@ -13,7 +12,7 @@ import {isAdmin} from '../../utils/roleGuard';
 
 const MembersListScreen = ({navigation}: any) => {
   const {user} = useAuthStore();
-  const {filter, loading, members, searchQuery, setSearchQuery} = useMembers();
+  const {loading, members, searchQuery, setSearchQuery} = useMembers();
 
   useEffect(() => {
     if (user && !isAdmin(user)) {
@@ -22,19 +21,12 @@ const MembersListScreen = ({navigation}: any) => {
   }, [navigation, user]);
 
   const filteredMembers = useMemo(() => {
-    let result = members;
-    if (filter === 'active') {
-      result = result.filter(member => member.financialStatus === 'green');
-    }
-    if (filter === 'overdue') {
-      result = result.filter(member => member.financialStatus === 'red');
-    }
     if (searchQuery.trim()) {
       const query = searchQuery.toLowerCase();
-      result = result.filter(member => member.fullName.toLowerCase().includes(query));
+      return members.filter(member => member.fullName.toLowerCase().includes(query));
     }
-    return result;
-  }, [filter, members, searchQuery]);
+    return members;
+  }, [members, searchQuery]);
 
   if (loading) {
     return <LoadingSpinner />;
@@ -42,14 +34,7 @@ const MembersListScreen = ({navigation}: any) => {
 
   return (
     <SafeAreaView style={styles.safe}>
-      <ScreenHeader
-        title="Members"
-        rightElement={
-          <TouchableOpacity style={styles.iconButton}>
-            <Icon name="plus" size={18} color={colors.gold.default} />
-          </TouchableOpacity>
-        }
-      />
+      <ScreenHeader title="Members" />
       <FlatList
         data={filteredMembers}
         keyExtractor={item => item.uid}
@@ -73,7 +58,7 @@ const MembersListScreen = ({navigation}: any) => {
           <EmptyState
             icon={searchQuery ? '🔍' : '👥'}
             title={searchQuery ? 'No results' : 'No members yet'}
-            message={searchQuery ? 'No members match your current filter.' : 'Add your first member using the + button.'}
+            message={searchQuery ? 'No members match your search.' : 'Members will appear here once they are added.'}
           />
         }
       />
@@ -84,7 +69,6 @@ const MembersListScreen = ({navigation}: any) => {
 const styles = StyleSheet.create({
   safe: {flex: 1, backgroundColor: colors.bg.secondary},
   content: {padding: spacing.lg, gap: spacing.md},
-  iconButton: {width: 48, height: 48, alignItems: 'center', justifyContent: 'center'},
   search: {
     minHeight: 48,
     padding: spacing.md,

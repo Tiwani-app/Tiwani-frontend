@@ -55,9 +55,13 @@ const ElectionBallotScreen = ({navigation, route}: any) => {
   const allRacesFilled = election.races.every(race => electionChoices[race.raceId] !== undefined);
 
   const handleSubmitBallot = async () => {
+    if (!user) {
+      return;
+    }
     try {
       setSubmitting(true);
-      await castElectionBallot(election.id, electionChoices);
+      await castElectionBallot(election.id, electionChoices, user.uid);
+      setHasVotedElection(true);
       setVoteSubmitted(true);
       resetElectionChoices();
     } catch (error: any) {
